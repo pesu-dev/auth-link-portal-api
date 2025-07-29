@@ -1,0 +1,55 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../node_modules/.prisma/client"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model Student {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  prn       String   @unique
+  branch    Json // Contains { full: String, short: String }
+  year      String
+  campus    Json // Contains { code: Int, short: String }
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("student")
+}
+
+model Link {
+  id        String    @id @default(auto()) @map("_id") @db.ObjectId
+  userId    String
+  prn       String
+  linkedAt  DateTime?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  @@unique([userId, prn])
+  @@index([userId])
+  @@index([prn])
+  @@map("link")
+}
+
+model AnonBan {
+  id        String    @id @default(auto()) @map("_id") @db.ObjectId
+  userId    String
+  reason    String
+  bannedAt  DateTime  @default(now())
+  expiresAt DateTime?
+  active    Boolean   @default(true)
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  @@index([userId, active])
+  @@map("anonban")
+}

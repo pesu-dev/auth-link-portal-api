@@ -1,0 +1,13 @@
+services:
+  mongo:
+    image: mongo:latest
+    container_name: mongo
+    ports:
+      - "27017:27017"
+    command: ["--replSet", "rs0", "--bind_ip_all"]
+    networks:
+      - mongo-net
+
+networks:
+  mongo-net:
+    driver: bridge
