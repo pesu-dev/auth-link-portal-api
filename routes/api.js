@@ -1,6 +1,5 @@
 import express from "express";
-import Link from "../models/Link.js";
-import Student from "../models/Student.js";
+import db from "../config/database.js";
 
 const router = express.Router();
 
@@ -16,13 +15,17 @@ router.get("/check-prn/:prn", async (req, res) => {
       });
     }
 
-    const exists = await Link.prnExists(prn);
+    const exists = await db.link.findUnique({
+      where: {
+        prn,
+      },
+    });
 
     res.json({
       success: true,
       data: {
         prn,
-        exists: !!exists,
+        exists: exists !== null,
       },
     });
   } catch (error) {
@@ -66,7 +69,13 @@ router.post("/student", async (req, res) => {
       });
     }
 
-    const student = await Student.createOrUpdateStudentRecord(studentData);
+    const student = await db.student.upsert({
+      where: {
+        prn: studentData.prn,
+      },
+      update: studentData,
+      create: studentData,
+    });
 
     res.json({
       success: true,
@@ -95,7 +104,22 @@ router.post("/link", async (req, res) => {
       });
     }
 
-    const linkRecord = await Link.createLinkRecord(userId, prn);
+    const linkRecord = await db.link.upsert({
+      where: {
+        userId_prn: {
+          userId,
+          prn,
+        },
+      },
+      update: {
+        linkedAt: new Date(),
+      },
+      create: {
+        userId,
+        prn,
+        linkedAt: new Date(),
+      },
+    });
 
     res.json({
       success: true,
