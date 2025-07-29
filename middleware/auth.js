@@ -10,7 +10,7 @@ export const authenticateToken = (req, res, next) => {
     });
   }
 
-  if (token !== "banana") {
+  if (token !== process.env.BACKEND_API_TOKEN) {
     return res.status(403).json({
       success: false,
       message: "Invalid access token",
