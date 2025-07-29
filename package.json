@@ -1,0 +1,25 @@
+{
+    "name": "pesu-api",
+    "version": "1.0.0",
+    "description": "PESU API server with Express and MongoDB",
+    "main": "server.js",
+    "type": "module",
+    "private": true,
+    "scripts": {
+        "start": "node server.js",
+        "dev": "node --watch server.js"
+    },
+    "keywords": [
+        "express",
+        "mongodb",
+        "api"
+    ],
+    "author": "Sachin Balasubramanyam",
+    "license": "MIT",
+    "dependencies": {
+        "cors": "^2.8.5",
+        "dotenv": "^16.3.1",
+        "express": "^4.18.2",
+        "mongoose": "^8.0.0"
+    }
+}
