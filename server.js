@@ -4,6 +4,7 @@ import dotenv from "dotenv";
 import connectDB from "./config/database.js";
 import apiRoutes from "./routes/api.js";
 import { authenticateToken } from "./middleware/auth.js";
+import { requestLogger } from "./middleware/logger.js";
 
 // Load environment variables
 dotenv.config();
@@ -16,6 +17,7 @@ const PORT = process.env.PORT || 3000;
 connectDB();
 
 // Middleware
+app.use(requestLogger); // Add request logging first
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
