@@ -1,3 +1,7 @@
+# IMPORTANT
+
+This API is now offline. A fix for the auth-link-portal has been implemented, therefore this API is no longer needed.
+
 # PESU API Server
 
 A Node.js Express server with MongoDB for managing student records and link records.
